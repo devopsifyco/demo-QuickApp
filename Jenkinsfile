@@ -26,25 +26,29 @@ pipeline {
             }
         }
 
-        // stage('Unit Testing') {
-        //      environment {
-        //         allure = tool name: 'allure'
-        //     }
-        //     steps{
-        //         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE'){
-        //             bat "rmdir /s /q target"
-        //             bat "dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target"  
-        //         }
-        //         script {
-        //             allure([
-        //                 includeProperties: false,
-        //                 jdk: '',
-        //                 properties: [],
-        //                 reportBuildPolicy: 'ALWAYS',
-        //                 results: [[path: 'target/allure-results']]])
-        //              }
-        //         }
-        // }
+        stage('Unit Testing') {
+            environment {
+                allure = tool name: 'Allure'
+            }
+            agent {
+                docker { 
+                    image 'mcr.microsoft.com/dotnet/sdk:6.0'
+                    // args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
+                    args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
+                }
+            }
+            steps {
+                sh "dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target"
+                // script {
+                //     allure([
+                //         includeProperties: false,
+                //         jdk: '',
+                //         properties: [],
+                //         reportBuildPolicy: 'ALWAYS',
+                //         results: [[path: 'target/allure-results']]])
+                //      }
+                // }
+        }
 
         // stage("Statis Security Scans"){
         //     environment {
