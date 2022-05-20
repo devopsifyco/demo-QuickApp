@@ -38,15 +38,7 @@ pipeline {
                 }
             }
             steps {
-                sh "dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target"                
-            }
-        }
-
-        stage('Allure Report') {
-            environment {
-                allure = tool name: 'Allure'
-            }            
-            steps {
+                sh "dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target"
                 script {
                     allure([
                         includeProperties: false,
@@ -54,25 +46,17 @@ pipeline {
                         properties: [],
                         reportBuildPolicy: 'ALWAYS',
                         results: [[path: 'target/allure-results']]])
-                     }
+                }
             }
         }
 
-        // stage("Statis Security Scans"){
-        //     environment {
-        //         scannerHome = tool name: 'sonar',type : 'hudson.plugins.sonar.SonarRunnerInstallation'
-        //     }
-        //     steps {
-        //          withSonarQubeEnv("SonaQube") {
-        //              bat "${scannerHome}/bin/sonar-scanner\
-        //              -D sonar.projectKey=$ProjectCode\
-        //              -D sonar.sources=.\
-        //              -D sonar.login=$SonaQubeToken\
-        //              -D sonar.host.url=http://localhost:9000/\
-        //              -D sonar.version=$VERSION.$BUILD_ID"
-        //         }
-        //     }
-        // }
+        stage('Statis Security Scans') {            
+            steps {
+                withSonarQubeEnv('Sonarqube') {
+                    sh "$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION -Dsonar.projectKey=$PROJECT_NAME -Dsonar.branch.name=${env.BRANCH_NAME} -Dsonar.sources=."
+                }
+            }
+        }
 
         // stage("Composition Analysis Scans"){            
         //     steps {
