@@ -47,7 +47,7 @@ pipeline {
                 //         reportBuildPolicy: 'ALWAYS',
                 //         results: [[path: 'target/allure-results']]])
                 //      }
-                // }
+            }
         }
 
         // stage("Statis Security Scans"){
