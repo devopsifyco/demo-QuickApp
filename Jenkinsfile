@@ -20,8 +20,8 @@ pipeline {
                 }
             }
             steps{
-                bat "dotnet restore QuickApp.sln"
-                bat "dotnet build QuickApp.sln --configuration Release"
+                sh "dotnet restore QuickApp.sln"
+                sh "dotnet build QuickApp.sln --configuration Release"
             }
         }
 
