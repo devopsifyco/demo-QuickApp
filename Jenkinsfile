@@ -39,14 +39,14 @@ pipeline {
             }
             steps {
                 sh "dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target"
-                // script {
-                //     allure([
-                //         includeProperties: false,
-                //         jdk: '',
-                //         properties: [],
-                //         reportBuildPolicy: 'ALWAYS',
-                //         results: [[path: 'target/allure-results']]])
-                //      }
+                script {
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'target/allure-results']]])
+                     }
             }
         }
 
