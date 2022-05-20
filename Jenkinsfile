@@ -38,7 +38,15 @@ pipeline {
                 }
             }
             steps {
-                sh "dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target"
+                sh "dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target"                
+            }
+        }
+
+        stage('Allure Report') {
+            environment {
+                allure = tool name: 'Allure'
+            }            
+            steps {
                 script {
                     allure([
                         includeProperties: false,
