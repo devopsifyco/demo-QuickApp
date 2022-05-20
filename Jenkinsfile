@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'mcr.microsoft.com/dotnet/sdk:5.0'
+            // args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
+            args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
+        }
+    }
     environment {
         SCANNER_HOME = tool 'SonarScanner'
         ORGANIZATION = "devopsifyco"
@@ -13,13 +19,6 @@ pipeline {
    
     stages {
         stage('Build') {            
-            agent {
-                docker { 
-                    image 'mcr.microsoft.com/dotnet/sdk:5.0'
-                    // args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
-                    args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
-                }
-            }
             steps{
                 sh "dotnet restore QuickApp.sln"
                 sh "dotnet build QuickApp.sln --configuration Release"
