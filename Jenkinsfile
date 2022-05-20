@@ -3,9 +3,10 @@ pipeline {
         docker {
             image 'mcr.microsoft.com/dotnet/sdk:5.0'
             // args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
-            args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
+            args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME -e PATH=$PATH:/tmp/DOTNET_CLI_HOME/.dotnet/tools'
         }
     }
+
     environment {
         SCANNER_HOME = tool 'SonarScanner'
         ORGANIZATION = "devopsifyco"
@@ -52,7 +53,7 @@ pipeline {
         stage('Sonarqube Scan') {            
             steps {
                 withSonarQubeEnv('Sonarqube') {
-                    sh "dotnet tool install --global dotnet-sonarscanner"
+                    sh "dotnet tool install --global dotnet-sonarscanner"                    
                     sh "dotnet sonarscanner begin /k:\"$PROJECT_NAME\" /d:sonar.organization=$ORGANIZATION /d:sonar.branch.name=${env.BRANCH_NAME}"
                     sh "dotnet build QuickApp.sln"
                     sh "dotnet sonarscanner end"
