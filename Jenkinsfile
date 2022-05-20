@@ -16,7 +16,7 @@ pipeline {
             agent {
                 docker { 
                     image 'mcr.microsoft.com/dotnet/sdk:6.0'
-                    args '-v $(pwd):/app -w /app'
+                    args '-v $HOME/:/app -w /app'
                 }
             }
             steps{
