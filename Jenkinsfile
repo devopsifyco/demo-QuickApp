@@ -93,11 +93,8 @@ pipeline {
             steps {
                  withSonarQubeEnv("SonaQube") {
                      sh "${scannerHome}/bin/sonar-scanner\
-                     -D sonar.projectKey=$ProjectCode\
-                     -D sonar.sources=.\
-                     -D sonar.login=$SonaQubeToken\
-                     -D sonar.host.url=$SonaQubeURL\
-                     -D sonar.version=$VERSION.$BUILD_ID"
+                     -D sonar.projectKey=$PROJECT_NAME\
+                     -D sonar.branch.name=${env.BRANCH_NAME}"
                 }
             }
 
