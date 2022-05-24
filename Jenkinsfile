@@ -1,3 +1,5 @@
+@Library('jenkins-shared-library')_
+import co.devopsify.jenkins.GlobalVars
 pipeline {
     options {
         disableConcurrentBuilds()
@@ -13,7 +15,7 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool 'SonarScanner'
-        ORGANIZATION = "devopsifyco"
+        ORGANIZATION = "${$GlobalVars.defaultOrganization}"
         PROJECT_NAME = "demo-QuickApp"
 
         registry = "huyntt/demo-QuickApp"
@@ -65,7 +67,6 @@ pipeline {
                 script {
                     allure([
                         includeProperties: false,
-                        jdk: '',
                         properties: [],
                         reportBuildPolicy: 'ALWAYS',
                         results: [[path: 'target/allure-results']]])
@@ -73,17 +74,17 @@ pipeline {
             }
         }
 
-        // stage('Sonarqube Scan') {            
-        //     steps {
-        //         withSonarQubeEnv('Sonarqube') {
-        //             sh "dotnet tool install --global dotnet-sonarscanner"                    
-        //             sh "dotnet sonarscanner begin /k:\"$PROJECT_NAME\" /o:\"$ORGANIZATION\" /d:sonar.branch.name=${env.BRANCH_NAME}"
-        //             sh "dotnet build QuickApp.sln --configuration Release"
-        //             sh "dotnet sonarscanner end"
-        //             // sh "$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION -Dsonar.projectKey=$PROJECT_NAME -Dsonar.branch.name=${env.BRANCH_NAME} -Dsonar.sources=."
-        //         }
-        //     }
-        // }
+        stage('Sonarqube Scan') {            
+            steps {
+                withSonarQubeEnv('$GlobalVars.defaultSonarqubeCredential') {
+                    sh "dotnet tool install --global dotnet-sonarscanner"                    
+                    sh "dotnet sonarscanner begin /k:\"$PROJECT_NAME\" /o:\"$ORGANIZATION\" /d:sonar.branch.name=${env.BRANCH_NAME}"
+                    sh "dotnet build QuickApp.sln --configuration Release"
+                    sh "dotnet sonarscanner end"
+                    // sh "$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION -Dsonar.projectKey=$PROJECT_NAME -Dsonar.branch.name=${env.BRANCH_NAME} -Dsonar.sources=."
+                }
+            }
+        }
 
         // stage("Composition Analysis Scans"){            
         //     steps {
