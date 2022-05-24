@@ -31,6 +31,12 @@ pipeline {
         }
 
         stage ('OWASP Dependency-Check Vulnerabilities') {
+                agent {
+                docker { 
+                    image 'owasp/zap2docker-stable'
+                    reuseNode true
+                    args "-v $WORKSPACE/zap:/zap/wrk"
+                }
             steps {
                
                 dependencyCheck additionalArguments: ''' 
