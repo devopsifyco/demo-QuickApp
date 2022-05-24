@@ -57,7 +57,7 @@ pipeline {
             }
             agent {
                 docker { 
-                    image 'mcr.microsoft.com/dotnet/sdk:5.0'
+                    image 'baolong0/net5jdk:latest'
                     // args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
                     args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
                 }
@@ -67,6 +67,7 @@ pipeline {
                 script {
                     allure([
                         includeProperties: false,
+                        jdk'',
                         properties: [],
                         reportBuildPolicy: 'ALWAYS',
                         results: [[path: 'target/allure-results']]])
