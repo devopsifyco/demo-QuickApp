@@ -88,10 +88,10 @@ pipeline {
         // }
         stage('Sonarqube Scan') {            
             environment {
-            scannerHome = tool name: 'sonar',type : 'hudson.plugins.sonar.SonarRunnerInstallation'
+            scannerHome = tool name: 'SonarScanner',type : 'hudson.plugins.sonar.SonarRunnerInstallation'
             }
             steps {
-                 withSonarQubeEnv("SonaQube") {
+                 withSonarQubeEnv("$GlobalVars.defaultSonarqubeCredential") {
                      sh "${scannerHome}/bin/sonar-scanner\
                      -D sonar.projectKey=$PROJECT_NAME\
                      -D sonar.branch.name=${env.BRANCH_NAME}"
