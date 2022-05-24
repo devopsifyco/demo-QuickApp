@@ -15,7 +15,7 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool 'SonarScanner'
-        ORGANIZATION = "${$GlobalVars.defaultOrganization}"
+        ORGANIZATION = "${GlobalVars.defaultOrganization}"
         PROJECT_NAME = "demo-QuickApp"
 
         registry = "huyntt/demo-QuickApp"
