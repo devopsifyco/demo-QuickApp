@@ -58,7 +58,7 @@ pipeline {
             agent {
                 docker { 
                     image 'baolong0/net5jdk:latest'
-                    // args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
+                    reuseNode true
                     args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
                 }
             }
@@ -86,7 +86,14 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Sonarqube Scan') {            
+        stage('Sonarqube Scan') {    
+        agent {
+                docker { 
+                    image 'baolong0/net5jdk:latest'
+                    reuseNode true
+                    args '-v /tmp:/app -w /app -e DOTNET_CLI_HOME=/tmp/DOTNET_CLI_HOME'
+                }
+        }        
             environment {
             scannerHome = tool name: 'SonarScanner',type : 'hudson.plugins.sonar.SonarRunnerInstallation'
             }
