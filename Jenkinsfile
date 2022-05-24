@@ -80,7 +80,7 @@ pipeline {
                 withSonarQubeEnv("$GlobalVars.defaultSonarqubeCredential") {
                     sh "dotnet tool install --global dotnet-sonarscanner"                    
                     sh "dotnet sonarscanner begin /k:\"$PROJECT_NAME\" /o:\"$ORGANIZATION\" /d:sonar.branch.name=${env.BRANCH_NAME}"
-                    sh "dotnet build QuickApp.sln --configuration Release"
+                    sh "dotnet build QuickApp.sln --configuration Debug"
                     sh "dotnet sonarscanner end"
                     // sh "$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION -Dsonar.projectKey=$PROJECT_NAME -Dsonar.branch.name=${env.BRANCH_NAME} -Dsonar.sources=."
                 }
