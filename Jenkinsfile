@@ -77,7 +77,7 @@ pipeline {
 
         stage('Sonarqube Scan') {            
             steps {
-                withSonarQubeEnv('$GlobalVars.defaultSonarqubeCredential') {
+                withSonarQubeEnv("$GlobalVars.defaultSonarqubeCredential") {
                     sh "dotnet tool install --global dotnet-sonarscanner"                    
                     sh "dotnet sonarscanner begin /k:\"$PROJECT_NAME\" /o:\"$ORGANIZATION\" /d:sonar.branch.name=${env.BRANCH_NAME}"
                     sh "dotnet build QuickApp.sln --configuration Release"
