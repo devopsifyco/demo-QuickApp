@@ -1,2 +1,2 @@
-@Library('jenkins-shared-library@fix-buildfail') _
+@Library('jenkins-shared-library') _
 devopsifyPipeline (buildOptionsFile: "./build_options.txt")
