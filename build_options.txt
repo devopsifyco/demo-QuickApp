@@ -1,0 +1,24 @@
+solutionPath=./QuickApp.sln
+dockerFile=./Dockerfile.api_app
+buildOptionsFile=./build_options.txt
+buildTech=dotnet
+buildContainer=huyntt/jenkins-agent
+dockerBuildContainer=docker:dind
+msBuildVersion=dotnet
+email: support@devopsify.co
+createRelease=false
+releaseBranch=master
+BuildRestore =dotnet restore QuickApp.sln
+BuildWebApp =dotnet build QuickApp.sln --configuration Release
+TestUnitTesting =dotnet test QuickApp.Tests/QuickApp.Tests.csproj -o target
+UploadWebApp = echo "Upload WebApp here"
+createImage=false
+runJobs=false
+runJobsList= Demos/DevOpsify/demo-testpipeline/master
+Demos/DevOpsify/demo-testpipeline/masterWait = false
+#Demos/testJob1Param1 = string, stringParam, This is from buildOption string
+#Demos/testJob1Param2 = booleanParam, booleanParam, false
+#Demos/testJob1Wait = false
+sonarProjectKey=demo-QuickApp
+dockerHubCredential=DockerHub
+baseVersion=1.0
