@@ -1,2 +1,2 @@
 @Library('jenkins-shared-library') _
-devopsifyPipeline (buildOptionsFile: "./build_options.txt")
+devopsifyPipeline (buildOptionsFile: ".ci/build.config")
