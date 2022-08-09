@@ -1,2 +1,2 @@
-@Library('jenkins-shared-library') _
+@Library('jenkins-shared-library@develop') _
 devopsifyPipeline (buildOptionsFile: ".ci/build.config")
