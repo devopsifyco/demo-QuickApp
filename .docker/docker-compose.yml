@@ -1,31 +1,26 @@
 version: "2"
 services:
-  db:
+  quickapp_db:
       image: mcr.microsoft.com/mssql/server:2019-latest
-      container_name: quickappdb 
+      container_name: quickapp_db 
       environment:
-        - SA_PASSWORD=${SA_PASSWORD}
-        - ACCEPT_EULA=${ACCEPT_EULA}
-  be:
+        - SA_PASSWORD=devopsify@123
+        - ACCEPT_EULA="Y"
+  quickapp_webapi:
       image: huyntt/demo-quickapp-api
       depends_on:
-          - db
-      container_name: app
+          - quickapp_db
+      container_name: quickapp_webapi
       restart: always
       environment:
-        - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-        - ${ConnectionStrings}
-        - ASPNETCORE_URLS=${ASPNETCORE_URLS}
-        #- ASPNETCORE_HTTPS_PORT=8001 
-        - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_Kestrel_Password}
-        - ASPNETCORE_Kestrel__Certificates__Default__Path=${ASPNETCORE_Kestrel_Path}
+        - ASPNETCORE_ENVIRONMENT=testing
+        - ConnectionStrings:DefaultConnection=Server=quickapp_db,1433;Database=QuickApp;User Id=sa;Password=devopsify@123;
       ports: 
-        - "9081:${app_port}"
-  fe:
-      image: "localhost:8085/web-app_${ASPNETCORE_ENVIRONMENT}:IMAGES_TAG"
-      container_name: angular_app
+        - "9081:80"
+  quickapp_webapp:
+      image: huyntt/demo-quickapp-web
+      container_name: quickapp_webapp
       depends_on:
-        - be
+        - quickapp_webapi
       ports: 
-        - "9080:80"  
-        - "9443:443"
+        - "9080:80"

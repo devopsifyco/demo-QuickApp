@@ -1,4 +1,6 @@
 /published
+node_modules
+package-lock.json
 /QuickApp/Properties/PublishProfiles/
 ## /QuickApp/Migrations/
 
