@@ -1,22 +1,16 @@
 version: "2"
 services:
   db:
-      image: "mcr.microsoft.com/mssql/server"
+      image: mcr.microsoft.com/mssql/server:2019-latest
       container_name: quickappdb 
-      networks:
-        quicknet:
-           ipv4_address: 172.28.0.2
       environment:
         - SA_PASSWORD=${SA_PASSWORD}
         - ACCEPT_EULA=${ACCEPT_EULA}
   be:
-      image: "localhost:8085/api-app_${ASPNETCORE_ENVIRONMENT}:IMAGES_TAG"
-      networks:
-        quicknet:
-          ipv4_address: 172.28.0.3
+      image: huyntt/demo-quickapp-api
       depends_on:
           - db
-      container_name: app 
+      container_name: app
       restart: always
       environment:
         - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
@@ -29,20 +23,9 @@ services:
         - "9081:${app_port}"
   fe:
       image: "localhost:8085/web-app_${ASPNETCORE_ENVIRONMENT}:IMAGES_TAG"
-      networks:
-        quicknet:
-          ipv4_address: 172.28.0.4
       container_name: angular_app
       depends_on:
         - be
       ports: 
         - "9080:80"  
         - "9443:443"
-networks:
-  quicknet:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
-          ip_range: 172.28.0.0/24
-          gateway: 172.28.0.255
