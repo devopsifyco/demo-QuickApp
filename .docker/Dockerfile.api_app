@@ -1,8 +1,5 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 
-RUN dotnet dev-certs https -ep ./https/aspnetapp.pfx -p devopsify@123
-RUN dotnet dev-certs https --trust
-
 WORKDIR /app
 COPY published/ /app
 ENTRYPOINT ["dotnet", "QuickApp.dll"]
